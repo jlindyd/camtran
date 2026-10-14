@@ -13,9 +13,9 @@
     skip: 'Saltar al contenido', navRoutes: 'Rutas y horarios', navFares: 'Tarifas y pases', navRide: 'Servicios', navNews: 'Noticias y eventos', navAbout: 'Comunidad',
     track: 'Rastrear autobús ↗', eyebrow: 'CONECTAMOS EL CONDADO DE CAMBRIA.',
     headline: 'Tu día.<br>Tu destino.<br><em>Tu viaje.</em>',
-    description: 'Desde tu viaje diario hasta tu próxima aventura. Te ayudamos a encontrar una mejor manera de llegar.',
+    description: 'Encuentra tu ruta. Rastrea tu autobús. Llega a donde necesitas ir.',
     heroFoot: 'Conectamos a nuestros vecinos.<br>Unimos a nuestras comunidades.', busCard: 'Lo bueno está en camino.', busSub: 'Vamos a tu destino.',
-    plan: '↗ Planificar viaje', trackTab: '◉ Rastrear autobús', findTab: '≡ Buscar ruta', sample: 'DEMOSTRACIÓN · DATOS DE EJEMPLO',
+    plan: '↗ Planificar viaje', trackTab: '◉ Rastrear autobús', findTab: '≡ Buscar ruta', sample: 'PLANIFICADOR DE EJEMPLO',
     from: 'Origen', to: 'Destino', when: 'Cuándo', leaveNow: 'Salir ahora (demo)', tomorrow: 'Mañana por la mañana (demo)', findTrip: 'Buscar mi viaje →',
     trackHint: 'Mira todos los autobuses en un mapa en vivo y las próximas salidas en tu parada.', trackLink: 'Abrir el rastreador en vivo →', findHint: 'Busca por número de ruta o destino.', findLink: 'Ver rutas de ejemplo →',
     routesEye: 'UNA RUTA PARA TU DÍA', routesTitle: '¿A dónde vas?', routesIntro: 'Encuentra tu conexión en Johnstown<br>y el norte del condado de Cambria.',
@@ -84,7 +84,7 @@
   };
 
   var EN = {};
-  Object.assign(ES, { stopSearch: 'Buscar paradas', showMap: 'Explorar el mapa', footerTag: 'Conectamos el condado de Cambria.<br>Un viaje a la vez.', publicInfo: 'Información pública ↗', footerAda: 'Accesibilidad y ADA ↗', footerGuide: 'Prototipo y guía de evaluación ↗', independent: 'Prototipo independiente · No es el sitio oficial de CamTran.', boundary: 'Datos ilustrativos. No se reciben pagos ni solicitudes.', editorLink: 'Probar el editor CMS ↗', guideLink: 'Guía de demostración ↗' });
+  Object.assign(ES, { heroCaption: 'Imagen ilustrativa del concepto', payHeader: 'CamTran PAY ↗', payHandoff: 'Continúa a CamTran PAY para comprar y administrar tus pases.', stopSearch: 'Buscar paradas', showMap: 'Explorar el mapa', footerTag: 'Conectamos el condado de Cambria.<br>Un viaje a la vez.', publicInfo: 'Información pública ↗', footerAda: 'Accesibilidad y ADA ↗', footerGuide: 'Prototipo y guía de evaluación ↗', independent: 'Prototipo independiente · No es el sitio oficial de CamTran.', boundary: 'Datos ilustrativos. No se reciben pagos ni solicitudes.', editorLink: 'Probar el editor CMS ↗', guideLink: 'Guía de demostración ↗' });
   $$('[data-i]').forEach(function (el) { EN[el.dataset.i] = el.innerHTML; });
   var T = function () { return UI[state.lang]; };
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
@@ -209,7 +209,7 @@
     $('#fare-grid').innerHTML = state.fares.map(function (f) {
       return '<article' + (f.featured ? ' class="featured"' : '') + '>' +
         (f.featured ? '<div class="fare-top"><span class="eyebrow">' + esc(f.label) + '</span></div>' : '<span class="eyebrow">' + esc(f.label) + '</span>') +
-        '<h3>' + esc(f.price) + '<span>' + esc(f.unit) + '</span></h3><p>' + esc(f.desc) + '</p><a href="' + esc(f.href) + '">' + esc(f.link) + ' ↗</a></article>';
+        '<h3>' + esc(f.price) + '<span>' + esc(f.unit) + '</span></h3><p>' + esc(f.desc) + '</p><a href="' + 'https://pay.camtranbus.com/app/ticketing' + '">' + (state.lang === 'es' ? 'Comprar con CamTran PAY' : 'Buy with CamTran PAY') + ' ↗</a></article>';
     }).join('');
   }
 
@@ -231,28 +231,8 @@
     };
   });
 
-  // Tabs: roving tabindex + arrow-key navigation, real tabpanels.
-  var tabs = $$('[data-tab]');
-  function selectTab(b, focus) {
-    tabs.forEach(function (x) {
-      var on = x === b;
-      x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1;
-      $('#' + x.getAttribute('aria-controls')).hidden = !on;
-    });
-    $('#tool-result').innerHTML = '';
-    if (focus) b.focus();
-  }
-  tabs.forEach(function (b, i) {
-    b.onclick = function () { selectTab(b); };
-    b.onkeydown = function (e) {
-      var k = e.key, n = null;
-      if (k === 'ArrowRight') n = tabs[(i + 1) % tabs.length];
-      else if (k === 'ArrowLeft') n = tabs[(i - 1 + tabs.length) % tabs.length];
-      else if (k === 'Home') n = tabs[0];
-      else if (k === 'End') n = tabs[tabs.length - 1];
-      if (n) { e.preventDefault(); selectTab(n, true); }
-    };
-  });
+  // Navigation actions are links: tracking opens its own page; route search stays on this page.
+  $('#tab-find').addEventListener('click', function () { requestAnimationFrame(function () { $('#route-search').focus({ preventScroll: true }); }); });
 
   $('#swap').onclick = function () { var a = $('#origin').value; $('#origin').value = $('#destination').value; $('#destination').value = a; };
   $('#trip-form').onsubmit = function (e) {
@@ -286,7 +266,7 @@
   function applyLanguage() {
     var l = state.lang, t = T();
     document.documentElement.lang = l;
-    var names = { '#route-search': ['Search routes','Buscar rutas'], '#swap': ['Swap origin and destination','Intercambiar origen y destino'], '#close-modal': ['Close dialog','Cerrar diálogo'], 'nav': ['Main navigation','Navegación principal'], '.filters': ['Filter routes','Filtrar rutas'], '.journey': ['Rider tools','Herramientas para pasajeros'], '.tool-tabs': ['Journey tools','Herramientas de viaje'], '.hero-art': ['Stylized transit network illustration, not a geographic route map','Ilustración de red de transporte, no es un mapa geográfico'] };
+    var names = { '#route-search': ['Search routes','Buscar rutas'], '#swap': ['Swap origin and destination','Intercambiar origen y destino'], '#close-modal': ['Close dialog','Cerrar diálogo'], 'nav': ['Main navigation','Navegación principal'], '.filters': ['Filter routes','Filtrar rutas'], '.journey': ['Rider tools','Herramientas para pasajeros'], '.tool-tabs': ['Journey tools','Herramientas de viaje'], '.hero-photo img': ['Illustrative blue and white transit bus in a Pennsylvania-style town','Autobús azul y blanco ilustrativo en un pueblo al estilo de Pensilvania'] };
     Object.keys(names).forEach(function (s) { if ($(s)) $(s).setAttribute('aria-label', names[s][l === 'es' ? 1 : 0]); });
     $$('[data-i]').forEach(function (el) { var v = l === 'es' ? ES[el.dataset.i] : EN[el.dataset.i]; if (v != null) el.innerHTML = v; });
     $$('[data-i-ph]').forEach(function (el) { el.placeholder = l === 'es' ? ES[el.dataset.iPh] : 'Search route number or destination'; });

@@ -6,7 +6,8 @@
 <meta name="robots" content="noindex,nofollow">
 <meta name="description" content="An independent CamTran rider experience prototype for RFP 26-05.">
 <title>CamTran — A better way to get there.</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=brand-1">
+<link rel="stylesheet" href="brand.css?v=2">
 </head>
 <body>
 <a class="skip" href="#main" data-i="skip">Skip to content</a>
@@ -17,7 +18,7 @@
 </div>
 
 <header>
-  <a class="brand" href="index.html" aria-label="CamTran home"><span class="brand-icon" aria-hidden="true">C<span>↗</span></span>CamTran<span class="brand-dot" aria-hidden="true">.</span></a>
+  <a class="brand" href="index.html" aria-label="CamTran home"><img src="assets/camtran-logo.jpg" alt="CamTran" width="240" height="80"></a>
   <nav aria-label="Main navigation">
     <a href="#routes" data-i="navRoutes">Routes &amp; schedules</a>
     <a href="#fares" data-i="navFares">Fares &amp; passes</a>
@@ -27,7 +28,7 @@
   </nav>
   <div class="header-actions">
     <button id="language" type="button" lang="es" aria-label="Cambiar a español">ES</button>
-    <a class="track-button" href="live.html" data-i="track">Track my bus ↗</a>
+    <a class="track-button" href="live.html" data-i="track">Track my bus ↗</a><a class="pay-button" href="https://pay.camtranbus.com/app/ticketing" data-i="payHeader">CamTran PAY ↗</a>
   </div>
 </header>
 
@@ -39,32 +40,20 @@
     <div class="hero-copy">
       <p class="eyebrow" data-i="eyebrow">CAMBRIA COUNTY. CONNECTED.</p>
       <h1 data-i="headline">Your day.<br>Your destination.<br><em>Your ride.</em></h1>
-      <p class="hero-description" data-i="description">From your everyday commute to your next adventure. We’ll help you find a better way to get there.</p>
+      <p class="hero-description" data-i="description">Find your route. Track your bus. Get where you need to go.</p>
       <div class="hero-foot"><span class="round-arrow" aria-hidden="true">↗</span><span data-i="heroFoot">Moving our neighbors.<br>Connecting our communities.</span></div>
     </div>
-    <div class="hero-art" role="img" aria-label="Stylized transit network illustration, not a geographic route map">
-      <div class="art-grid"></div><div class="contour contour-one"></div><div class="contour contour-two"></div>
-      <div class="art-label">JOHNSTOWN &amp; BEYOND</div>
-      <svg viewBox="0 0 650 590" aria-hidden="true">
-        <path class="map-line map-light" d="M-30 450 150 450Q190 450 190 410V175Q190 135 230 135H620"/>
-        <path class="map-line map-blue" d="M80 650V355Q80 315 120 315H440Q480 315 480 275V-30"/>
-        <path class="map-line map-green" d="M-40 75H325Q365 75 365 115V455Q365 495 405 495H700"/>
-        <g class="map-stops"><circle cx="190" cy="315" r="12"/><circle cx="365" cy="135" r="12"/><circle cx="365" cy="315" r="17"/><circle cx="480" cy="135" r="12"/><circle cx="190" cy="450" r="12"/><circle cx="365" cy="420" r="12"/></g>
-        <g fill="#fff" font-family="Arial" font-size="13"><text x="207" y="291">DOWNTOWN</text><text x="390" y="403">YOUR NEXT STOP</text><text x="395" y="115">CAMBRIA COUNTY</text></g>
-      </svg>
-      <div class="bus-card"><span class="bus-icon" aria-hidden="true">▥</span><div><b data-i="busCard">Good things are on the way.</b><span data-i="busSub">Let’s get you there.</span></div><span aria-hidden="true">↗</span></div>
-      <span class="art-caption">A COMMUNITY IN MOTION / 01</span>
-    </div>
+    <figure class="hero-photo"><img src="assets/camtran-hero.webp" alt="Illustrative blue and white transit bus in a Pennsylvania-style town" width="1536" height="1024" fetchpriority="high"><figcaption data-i="heroCaption">Illustrative concept image</figcaption></figure>
   </section>
 
   <section class="journey" aria-label="Rider tools">
-    <div class="tool-tabs" role="tablist" aria-label="Journey tools">
-      <button role="tab" id="tab-plan" aria-controls="panel-plan" aria-selected="true" tabindex="0" data-tab="plan" data-i="plan">↗ Plan a trip</button>
-      <button role="tab" id="tab-track" aria-controls="panel-track" aria-selected="false" tabindex="-1" data-tab="track" data-i="trackTab">◉ Track a bus</button>
-      <button role="tab" id="tab-find" aria-controls="panel-find" aria-selected="false" tabindex="-1" data-tab="find" data-i="findTab">≡ Find a route</button>
-      <span data-i="sample">INTERACTIVE DEMO · SAMPLE DATA</span>
-    </div>
-    <div role="tabpanel" id="panel-plan" aria-labelledby="tab-plan">
+    <nav class="tool-tabs" aria-label="Journey tools">
+      <span class="active-tool" aria-current="true" data-i="plan">↗ Plan a trip</span>
+      <a id="tab-track" href="live.html" data-i="trackTab">◉ Track a bus</a>
+      <a id="tab-find" href="#routes" data-i="findTab">≡ Find a route</a>
+      <span class="tool-note" data-i="sample">TRIP PLANNER DEMO</span>
+    </nav>
+    <div id="panel-plan">
       <form id="trip-form">
         <div class="form-fields">
           <label><span data-i="from">From</span><select id="origin"><option>Johnstown Transit Center</option><option>Galleria</option><option>Westwood</option></select></label>
@@ -75,9 +64,17 @@
         </div>
       </form>
     </div>
-    <div role="tabpanel" id="panel-track" aria-labelledby="tab-track" hidden><p><span data-i="trackHint">See every bus on a live map and the next departures at your stop.</span> <a class="text-link dark" href="live.html" data-i="trackLink">Open the live tracker →</a></p></div>
-    <div role="tabpanel" id="panel-find" aria-labelledby="tab-find" hidden><p><span data-i="findHint">Search by route number or destination below.</span> <a class="text-link dark" href="#routes" data-i="findLink">Browse route examples →</a></p></div>
     <div id="tool-result" aria-live="polite"></div>
+  </section>
+
+  <section id="fares" class="section">
+    <div class="section-heading">
+      <div><p class="eyebrow" data-i="faresEye">A LITTLE PLANNING. A LOT OF POSSIBILITY.</p><h2 data-i="faresTitle">Your ride. Your way to pay.</h2></div>
+      <a class="text-link dark" href="https://www.camtranbus.com/fares/camtran-fares/" data-i="confirmFares">Confirm current fares ↗</a>
+    </div>
+    <p data-i="faresNote">Urban adult fare examples from CamTran’s published fare page. Confirm eligibility and current prices before purchase.</p>
+    <div id="fare-grid" class="fare-grid"></div><p class="pay-handoff" data-i="payHandoff">Continue to CamTran PAY to purchase and manage your passes.</p>
+    <button class="text-link dark" id="discounts" type="button" data-i="discounts">Explore student, senior &amp; reduced fare options →</button>
   </section>
 
   <section id="routes" class="section">
@@ -112,15 +109,7 @@
     </div>
   </section>
 
-  <section id="fares" class="section">
-    <div class="section-heading">
-      <div><p class="eyebrow" data-i="faresEye">A LITTLE PLANNING. A LOT OF POSSIBILITY.</p><h2 data-i="faresTitle">Your ride. Your way to pay.</h2></div>
-      <a class="text-link dark" href="https://www.camtranbus.com/fares/camtran-fares/" data-i="confirmFares">Confirm current fares ↗</a>
-    </div>
-    <p data-i="faresNote">Urban adult fare examples from CamTran’s published fare page. Confirm eligibility and current prices before purchase.</p>
-    <div id="fare-grid" class="fare-grid"></div>
-    <button class="text-link dark" id="discounts" type="button" data-i="discounts">Explore student, senior &amp; reduced fare options →</button>
-  </section>
+
 
   <section id="services" class="services section">
     <div>
@@ -163,7 +152,7 @@
 
 <footer>
   <div class="footer-main">
-    <a class="brand" href="index.html">CamTran.</a>
+    <a class="brand footer-brand" href="index.html"><img src="assets/camtran-logo.jpg" alt="CamTran" width="200" height="67" loading="lazy"></a>
     <p data-i="footerTag">Connecting Cambria County.<br>One ride at a time.</p>
     <a href="https://www.camtranbus.com/about/public-information/" data-i="publicInfo">Public information ↗</a>
     <a href="https://www.camtranbus.com/disability-services/" data-i="footerAda">Accessibility &amp; ADA ↗</a>
@@ -178,6 +167,6 @@
 <script src="cms/adapter.js"></script>
 <script src="transit/sample.js"></script>
 <script src="transit/transit-adapter.js"></script>
-<script src="app.js"></script>
+<script src="app.js?v=brand-1"></script>
 </body>
 </html>

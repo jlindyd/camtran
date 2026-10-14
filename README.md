@@ -91,3 +91,7 @@ Each returned dataset carries its own provenance. Vehicle and arrival badges are
 ## Full-screen tracker verification
 
 The full-screen tracker filters departures by selected direction and labels schedule-only results. CMS sample notices are explicitly marked in English/Spanish. Stale buses remain listed as No recent signal but are excluded from map positions. Every route stop is selectable. `node verify-selection.cjs` now exercises live.js, including A-to-B-to-A delayed responses, direction filtering, scheduled labels, stale handling and notice labels.
+
+## Approved CamTran brand design
+
+The homepage uses the public CamTran logo (downloaded from camtranbus.com/wp-content/uploads/logo-header.jpg), CamTran blue rider controls, magenta accents and navy-on-orange PAY actions. Track a bus opens live.html; Find a route links to #routes and focuses the search field. Fare purchase buttons go to the official PAY ticketing page. Hero artwork at dist/assets/camtran-hero.webp is AI-generated concept imagery, not a verified CamTran vehicle or location. Generated using the built-in image tool with the approved visual mockup as reference; prompt: create the blue/white transit bus scene in a Pennsylvania-style town, without UI, logos or readable markings. Replace with approved agency photography before production. Palette contrast and keyboard/mobile behavior were checked; this is not a WCAG certification.
