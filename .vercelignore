@@ -1,0 +1,6 @@
+﻿rfp-extract.txt
+*.py
+pwsh.log
+.openai
+verify-*.cjs
+tools
