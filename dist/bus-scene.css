@@ -1,0 +1,19 @@
+.rider-intro .city-scene{background:#cbe8f6;isolation:isolate}
+.city-scene>svg{display:block;width:100%;height:100%;object-fit:cover}
+.city-buildings{animation:city-pass 28s linear infinite}
+.city-road{animation:city-road 3s linear infinite}
+.city-clouds{animation:city-clouds 24s ease-in-out infinite alternate}
+.city-bus-travel{animation:city-drive 12s ease-in-out infinite alternate}
+.city-bus-body{animation:city-bounce 1.8s ease-in-out infinite}
+.city-wheel{transform-box:fill-box;transform-origin:center;animation:city-wheel 1.3s linear infinite}
+@keyframes city-pass{to{transform:translateX(-800px)}}
+@keyframes city-road{to{transform:translateX(-140px)}}
+@keyframes city-clouds{to{transform:translateX(45px)}}
+@keyframes city-drive{from{transform:translateX(-40px)}to{transform:translateX(55px)}}
+@keyframes city-bounce{50%{transform:translateY(-1.5px)}}
+@keyframes city-wheel{to{transform:rotate(360deg)}}
+.city-scene[data-paused=true] svg *{animation-play-state:paused!important}
+.city-scene .motion-toggle{position:absolute;left:14px;top:14px;min-height:44px;padding:8px 12px;border:1px solid #7d9cb3;border-radius:6px;background:#fffffff5;color:#09264a;font-size:12px;font-weight:700;z-index:2}
+.city-scene .motion-toggle:hover{background:#edf4f9}
+.city-scene figcaption{bottom:10px;right:10px}
+@media(prefers-reduced-motion:reduce){.city-scene svg *{animation:none!important}.city-scene .motion-toggle{display:none}}

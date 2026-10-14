@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="style.css?v=brand-1">
 <link rel="stylesheet" href="brand.css?v=3">
 <link rel="stylesheet" href="layout.css?v=2">
+<link rel="stylesheet" href="bus-scene.css?v=1">
 </head>
 <body>
 <a class="skip" href="#main" data-i="skip">Skip to content</a>
@@ -45,7 +46,60 @@
       <p class="hero-description" data-i="description">Find your route. Track your bus. Get where you need to go.</p>
       <div class="hero-foot"><span class="round-arrow" aria-hidden="true">↗</span><span data-i="heroFoot">Moving our neighbors.<br>Connecting our communities.</span></div>
     </div>
-    <figure class="hero-photo"><img src="assets/camtran-hero.webp" alt="Illustrative blue and white transit bus in a Pennsylvania-style town" width="1536" height="1024" fetchpriority="high"><figcaption data-i="heroCaption">Illustrative concept image</figcaption></figure>
+    <figure class="hero-photo city-scene" data-paused="false"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480" fill="none" role="img" aria-label="Illustrated blue and white bus traveling through a city with green hills">
+<defs>
+ <linearGradient id="sky" x2="0" y2="480" gradientUnits="userSpaceOnUse"><stop stop-color="#bfe4fa"/><stop offset="1" stop-color="#f3f9fc"/></linearGradient>
+ <linearGradient id="glass" x2="0" y2="1"><stop stop-color="#1f526d"/><stop offset="1" stop-color="#092b48"/></linearGradient>
+ <pattern id="windows" width="28" height="34" patternUnits="userSpaceOnUse"><rect x="8" y="9" width="10" height="16" rx="2" fill="#d5e8ef"/></pattern>
+ <pattern id="road-lines" width="140" height="20" patternUnits="userSpaceOnUse"><rect width="76" height="5" y="8" rx="2" fill="#f9f3d9"/></pattern>
+ <g id="city-block">
+  <path d="M0 291V188h110v103" fill="#cfdee5"/><path d="M8 202h94v81H8z" fill="url(#windows)"/>
+  <path d="M128 291V153h91v138" fill="#d99881"/><path d="M137 163h72v110h-72z" fill="url(#windows)"/><path d="M122 153h104v9H122z" fill="#b77462"/>
+  <path d="M238 291V200h128v91" fill="#f4d7a6"/><path d="M249 207h104v65H249z" fill="url(#windows)"/><path d="M233 199h138v10H233z" fill="#c6a676"/>
+  <path d="M390 291V166h88v125" fill="#b3c8d2"/><path d="M400 176h70v99h-70z" fill="url(#windows)"/>
+  <path d="M502 291V215h138v76" fill="#dba28c"/><path d="M512 222h118v52H512z" fill="url(#windows)"/>
+  <path d="M665 291V157h94v134" fill="#e6d6b8"/><path d="M674 169h75v110h-75z" fill="url(#windows)"/>
+  <path d="M686 157v-20h52v20M694 137v-18a18 18 0 0 1 36 0v18" fill="#7794a1"/><path d="M712 101V84" stroke="#527482" stroke-width="3"/>
+  <g stroke="#507d74" stroke-width="7"><path d="M88 303v-58M355 303v-60M630 303v-55"/></g>
+  <g fill="#6b9d81"><circle cx="88" cy="237" r="24"/><circle cx="355" cy="237" r="27"/><circle cx="630" cy="240" r="25"/></g>
+  <path d="M0 300H800" stroke="#98b4bd" stroke-width="3"/>
+ </g>
+</defs>
+<rect width="800" height="480" fill="url(#sky)"/>
+<circle cx="666" cy="67" r="31" fill="#fff5d4"/>
+<g class="city-clouds" fill="#fff" opacity=".85"><path d="M85 74a19 19 0 0 1 34-9 27 27 0 0 1 49 12 17 17 0 0 1 6 33H85a18 18 0 0 1 0-36Z"/><path d="M407 49a14 14 0 0 1 25-6 20 20 0 0 1 37 8 12 12 0 0 1 4 24h-66a13 13 0 0 1 0-26Z"/></g>
+<path d="M-80 250C50 70 145 125 236 170S385 72 493 142 649 55 880 195V320H-80Z" fill="#a3c5ba"/>
+<path d="M-50 263C65 166 187 174 293 220S468 130 573 195 703 152 850 232V330H-50Z" fill="#78a795"/>
+<g class="city-buildings"><use href="#city-block"/><use href="#city-block" x="800"/></g>
+<rect y="302" width="800" height="21" fill="#d9e2e5"/><path d="M0 322H800" stroke="#fff" stroke-width="4"/>
+<rect y="324" width="800" height="156" fill="#607482"/>
+<path d="M0 444H800" stroke="#a7b6bd" stroke-width="2"/>
+<g class="city-road"><rect x="0" y="408" width="1600" height="20" fill="url(#road-lines)"/></g>
+<g class="city-bus-travel">
+ <g class="city-bus-body">
+  <ellipse cx="407" cy="389" rx="192" ry="13" fill="#1a354e" opacity=".2"/>
+  <path d="M220 270Q220 252 242 252H546Q568 252 575 276L587 335V365Q587 376 574 376H233Q220 376 220 361Z" fill="#f8fbfe" stroke="#173d5b" stroke-width="3"/>
+  <path d="M220 326H582L587 343V365Q587 376 574 376H233Q220 376 220 361Z" fill="#00649e"/>
+  <path d="M221 337H582V344H221Z" fill="#a00065"/>
+  <rect x="247" y="241" width="263" height="12" rx="6" fill="#e1ebf0"/>
+  <rect x="231" y="264" width="274" height="53" rx="4" fill="url(#glass)"/>
+  <path d="M514 264H546Q556 264 561 278L570 316H514Z" fill="url(#glass)"/>
+  <g stroke="#eff8fb" stroke-width="5"><path d="M274 264v53M319 264v53M364 264v53M409 264v53M454 264v53"/></g>
+  <path d="M243 273h244" stroke="#83b3c6" stroke-width="3" opacity=".7"/>
+  <path d="M516 323h43v49h-43z" fill="#174767" stroke="#c3d9e4" stroke-width="2"/><path d="M538 324v47" stroke="#a5bdcb" stroke-width="2"/>
+  <rect x="235" y="349" width="15" height="8" rx="2" fill="#edba55"/><rect x="570" y="345" width="13" height="10" rx="2" fill="#fff1bf"/>
+  <path d="M572 291h14v27h-9" stroke="#163c58" stroke-width="4"/>
+  <path d="M228 366h29M562 366h21" stroke="#c6d9e2" stroke-width="5"/>
+  <text x="355" y="366" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="white">CamTran</text>
+  <rect x="516" y="256" width="37" height="7" rx="2" fill="#0d2d43"/>
+  <circle cx="287" cy="373" r="26" fill="#1d3549"/><circle cx="491" cy="373" r="26" fill="#1d3549"/>
+  <g class="city-wheel"><circle cx="287" cy="373" r="16" fill="#d8e4eb"/><circle cx="287" cy="373" r="6" fill="#6c8b9c"/><path d="M287 359v28M273 373h28" stroke="#6c8b9c" stroke-width="3"/></g>
+  <g class="city-wheel"><circle cx="491" cy="373" r="16" fill="#d8e4eb"/><circle cx="491" cy="373" r="6" fill="#6c8b9c"/><path d="M491 359v28M477 373h28" stroke="#6c8b9c" stroke-width="3"/></g>
+ </g>
+</g>
+<path d="M0 469H800" stroke="#dbe7e8" stroke-width="22"/>
+</svg>
+<button class="motion-toggle" type="button" aria-pressed="false">Ⅱ Pause animation</button><figcaption>Illustrative city scene</figcaption></figure>
   </section>
 
   <section class="journey" aria-label="Rider tools">
@@ -172,5 +226,6 @@
 <script src="transit/sample.js"></script>
 <script src="transit/transit-adapter.js"></script>
 <script src="app.js?v=layout-2"></script>
+<script src="bus-scene.js?v=1"></script>
 </body>
 </html>
