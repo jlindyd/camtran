@@ -1,0 +1,12 @@
+const vm=require('node:vm'),fs=require('node:fs'),assert=require('node:assert/strict');
+const values=new Map(),window={addEventListener(){}};
+const context={window,localStorage:{getItem:k=>values.get(k)||null,setItem:(k,v)=>values.set(k,v),removeItem:k=>values.delete(k)},Intl,Date,console};vm.createContext(context);
+vm.runInContext(fs.readFileSync('dist/cms/content.js','utf8'),context);vm.runInContext(fs.readFileSync('dist/cms/adapter.js','utf8'),context);
+const cms=window.CMS,actor={name:'Test editor',role:'editor'},approver={name:'Test approver',role:'approver'};
+(async()=>{let seed=(await cms.all('alerts'))[0],original=seed.title.en;
+let draft=await cms.save('alerts',{...seed,title:{en:'Revised notice',es:'Aviso revisado'}},actor);assert.equal(draft.status,'draft');assert.equal((await cms.published('alerts','en'))[0].title,original);
+await assert.rejects(cms.transition('alerts',draft,'published',actor));
+draft=await cms.transition('alerts',draft,'in_review',actor);draft=await cms.transition('alerts',draft,'approved',approver);draft=await cms.transition('alerts',draft,'published',approver);assert.equal((await cms.published('alerts','en'))[0].title,'Revised notice');
+let restored=await cms.save('alerts',{...seed,status:'draft'},actor);assert.equal((await cms.published('alerts','en'))[0].title,'Revised notice');assert.equal(restored.status,'draft');
+restored.body.es='';restored=await cms.save('alerts',restored,actor);restored=await cms.transition('alerts',restored,'in_review',actor);await assert.rejects(cms.transition('alerts',restored,'approved',approver));
+assert.ok((await cms.history('alerts',seed.id)).length>=6);assert.ok((await cms.audit()).length>=6);console.log('PASS: draft isolation, publication, restoration, role transitions, bilingual approval, history and audit');})().catch(e=>{console.error(e);process.exitCode=1});

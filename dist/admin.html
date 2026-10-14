@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>CamTran | CMS editor demo</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<a class="skip" href="#editor">Skip to editor</a>
+<div class="concept"><span>RFP 26-05 / CMS INTEGRATION DEMO · BROWSER-LOCAL SAMPLE DATA</span><a href="index.html" target="camtran-public">Open public site in another tab ↗</a></div>
+
+<main class="admin">
+  <header class="admin-head">
+    <div>
+      <p class="eyebrow">CONTENT MANAGEMENT · ADAPTER DEMO</p>
+      <h1>Publish without writing code.</h1>
+      <p class="intro">This editor talks to the website only through the CMS adapter. In production the adapter points at the DYD CMS; here it uses sample data stored in this browser. Open the public site in a second tab and publish an alert to watch it appear.</p>
+    </div>
+    <div class="role-box">
+      <label>Demo role (simulated identity)
+        <select id="role">
+          <option value="editor">Sam Rivera · Editor</option>
+          <option value="approver">Alex Chen · Approver</option>
+          <option value="admin">Jordan Lee · Administrator</option>
+        </select>
+      </label>
+      <p class="small" id="role-help"></p>
+    </div>
+  </header>
+
+  <div class="tool-tabs" role="tablist" aria-label="Content type" id="collections">
+    <button role="tab" aria-selected="true" tabindex="0" data-collection="alerts">Alerts</button>
+    <button role="tab" aria-selected="false" tabindex="-1" data-collection="news">News</button>
+    <button role="tab" aria-selected="false" tabindex="-1" data-collection="events">Events</button>
+    <span><button type="button" class="text-link dark" id="reset">Reset demo data</button></span>
+  </div>
+
+  <p id="status" class="status" role="status" aria-live="polite"></p>
+
+  <div class="admin-grid" id="editor">
+    <section aria-labelledby="list-h">
+      <div class="row-between"><h2 id="list-h">Content</h2><button type="button" class="primary" id="new">+ New</button></div>
+      <ul id="items" class="items"></ul>
+    </section>
+
+    <section aria-labelledby="form-h">
+      <h2 id="form-h">Edit</h2>
+      <form id="form" novalidate></form>
+      <div id="preview" class="preview" hidden></div>
+    </section>
+  </div>
+
+  <div class="admin-grid">
+    <section aria-labelledby="hist-h"><h2 id="hist-h">Version history</h2><ol id="history" class="log"><li class="muted">Select an item to see its versions.</li></ol></section>
+    <section aria-labelledby="audit-h"><h2 id="audit-h">Audit log</h2><ol id="audit" class="log"></ol></section>
+  </div>
+</main>
+
+<script src="cms/content.js"></script>
+<script src="cms/adapter.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
+
