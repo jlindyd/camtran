@@ -5,7 +5,7 @@
 
   var $ = function (s) { return document.querySelector(s); };
   var $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
-  var state = { lang: 'en', filter: 'all', routes: [], alerts: [], news: [], events: [], fares: [] };
+  var state = { lang: 'en', filter: 'all', page: 1, routes: [], alerts: [], news: [], events: [], fares: [] };
   var returnFocus, modalCleanup = null;
 
   /* ---------- interface strings ---------- */
@@ -179,10 +179,19 @@
   function renderRoutes() {
     var t = T(), q = $('#route-search').value.trim().toLowerCase();
     var shown = state.routes.filter(function (r) { return (state.filter === 'all' || r.area === state.filter) && (r.id + ' ' + r.name + ' ' + r.places).toLowerCase().indexOf(q) !== -1; });
-    $('#route-list').innerHTML = shown.length ? shown.map(function (r) {
+    var pages = Math.max(1, Math.ceil(shown.length / 5));
+    state.page = Math.min(state.page, pages);
+    var start = (state.page - 1) * 5;
+    $('#route-list').innerHTML = shown.length ? shown.slice(start, start + 5).map(function (r) {
       return '<button class="route-row" type="button" data-route="' + esc(r.id) + '"><span class="route-number"' + (r.color ? ' style="background:' + r.color + ';color:' + contrastInk(r.color) + '"' : '') + '>' + esc(r.id) + '</span><div><h3>' + esc(r.name) + '</h3>' + (r.places ? '<p>' + esc(r.places) + '</p>' : '') + '</div><span class="route-type">' + (r.area === 'urban' ? t.urban : t.rural) + '</span><b aria-hidden="true">↗</b></button>';
     }).join('') : '<p class="no-results">' + esc(t.noRoutes) + '</p>';
-    $('#route-count').textContent = t.shown(shown.length);
+    var es = state.lang === 'es';
+    $('#route-count').textContent = shown.length ? (es ? 'Mostrando ' : 'Showing ') + (start + 1) + '–' + Math.min(start + 5, shown.length) + (es ? ' de ' : ' of ') + shown.length + (es ? ' rutas' : ' routes') : t.shown(0);
+    var pagination = $('#route-pagination');
+    pagination.setAttribute('aria-label', es ? 'Páginas de rutas' : 'Route pages');
+    pagination.hidden = pages <= 1;
+    pagination.innerHTML = '<button type="button" data-page="' + (state.page - 1) + '"' + (state.page === 1 ? ' disabled' : '') + '>' + (es ? '← Anterior' : '← Previous') + '</button>' + Array.from({ length: pages }, function (_, i) { var n = i + 1; return '<button type="button" data-page="' + n + '" aria-label="' + (es ? 'Página ' : 'Page ') + n + '"' + (n === state.page ? ' aria-current="page"' : '') + '>' + n + '</button>'; }).join('') + '<button type="button" data-page="' + (state.page + 1) + '"' + (state.page === pages ? ' disabled' : '') + '>' + (es ? 'Siguiente →' : 'Next →') + '</button>';
+    $$('#route-pagination [data-page]').forEach(function (button) { button.onclick = function () { state.page = Number(button.dataset.page); renderRoutes(); var current = $('#route-pagination [aria-current="page"]'); if (current) current.focus(); }; });
     $$('[data-route]').forEach(function (b) { b.onclick = function () { routeDetail(b.dataset.route); }; });
   }
 
@@ -380,10 +389,11 @@
   }
 
   /* ---------- static-ish interactions ---------- */
-  $('#route-search').oninput = renderRoutes;
+  $('#route-search').oninput = function () { state.page = 1; renderRoutes(); };
   $$('[data-filter]').forEach(function (b) {
     b.onclick = function () {
       state.filter = b.dataset.filter;
+      state.page = 1;
       $$('[data-filter]').forEach(function (x) { x.classList.toggle('selected', x === b); x.setAttribute('aria-pressed', x === b); });
       renderRoutes();
     };
