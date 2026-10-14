@@ -6,6 +6,7 @@
 <meta name="robots" content="noindex,nofollow">
 <meta name="description" content="An independent CamTran rider experience prototype for RFP 26-05.">
 <title>CamTran — A better way to get there.</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -93,25 +94,34 @@
         <button data-filter="rural" aria-pressed="false" data-i="fRural">Rural / CamTran+</button>
       </div>
     </div>
-    <p class="small" data-i="routesNote">Selected route examples from the current website. Demo timetables and maps are illustrative.</p>
+    <p class="small" data-i="routesNote">Routes and stops from CamTran’s public tracker system. Timetables are not reproduced here; use live departures or the official schedules.</p>
     <div id="route-list" class="route-list"></div>
     <p id="route-count" class="small" aria-live="polite"></p>
   </section>
 
-  <section id="tracker" class="tracker-section">
+  <section id="tracker" class="tracker-section" aria-labelledby="tracker-h">
     <div>
       <p class="eyebrow" data-i="trackerEye">LESS GUESSING. MORE GOING.</p>
-      <h2 data-i="trackerTitle">Your next bus,<br>at a glance.</h2>
-      <p data-i="trackerText">A clearer view of what’s coming. Select a route to explore the arrival experience.</p>
-      <label class="tracker-select"><span data-i="route">Route</span><select id="tracker-route"></select></label>
+      <h2 id="tracker-h" data-i="trackerTitle">Your next bus,<br>at a glance.</h2>
+      <p data-i="trackerText">See where buses are right now and when the next one reaches your stop.</p>
+      <label class="tracker-select"><span data-i="route">Route</span><select id="tracker-route"><option>Loading routes…</option></select></label>
+      <label class="tracker-select"><span data-i="stopSearch">Search stops</span><input id="tracker-stop-search" type="search" autocomplete="off" aria-describedby="stop-search-status"></label><p id="stop-search-status" role="status" class="small"></p><label class="tracker-select"><span data-i="stopLabel">Stop</span><select id="tracker-stop" disabled></select></label>
+      <p id="data-badge" class="data-badge" role="status"></p>
       <a class="text-link" href="https://live.camtranbus.com/" data-i="liveLink">Open CamTran’s existing live tracker ↗</a>
     </div>
     <div class="arrival-board">
-      <div class="board-heading"><span><span class="status-dot"></span> <span data-i="arrPrev">ARRIVAL PREVIEW</span></span><span data-i="demoData">DEMO DATA</span></div>
-      <h3>Johnstown Transit Center</h3>
-      <p data-i="illStop">Illustrative stop · not live departure information</p>
-      <div id="arrivals"></div>
-      <div class="board-foot" data-i="boardFoot">◷ Sample times only. Use the live tracker for travel.</div>
+      <div class="board-heading"><span id="board-status"></span><span id="board-updated"></span></div>
+      <h3 id="board-stop"></h3>
+      <p id="board-sub"></p>
+      <div id="arrivals" aria-live="polite"></div>
+      <div class="board-foot" id="board-foot"></div>
+    </div>
+    <div class="tracker-wide">
+      <details id="tracker-map-toggle"><summary data-i="showMap">Explore the map</summary><p id="map-source" class="small"></p><div id="live-map" class="live-map" role="region" aria-label="Live bus map"></div></details>
+      <details class="vehicle-table">
+        <summary id="veh-summary"></summary>
+        <div class="table-scroll"><table><caption id="veh-caption"></caption><thead id="veh-head"></thead><tbody id="veh-body"></tbody></table></div>
+      </details>
     </div>
   </section>
 
@@ -179,6 +189,10 @@
 
 <script src="cms/content.js"></script>
 <script src="cms/adapter.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="transit/sample.js"></script>
+<script src="transit/transit-adapter.js"></script>
 <script src="app.js"></script>
+<script src="tracker.js"></script>
 </body>
 </html>

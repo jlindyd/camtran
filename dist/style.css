@@ -12,7 +12,42 @@
 .news-date{display:block;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#3f5a35;margin-bottom:10px}
 .news-card h3{font-size:19px;margin-bottom:8px}
 .community-two{grid-template-columns:repeat(2,1fr)}
+.tracker-select input{display:block;width:100%;margin-top:6px;padding:12px;border:1px solid #b9c6c0;border-radius:3px;background:white;color:var(--ink);font-size:14px}.tracker-wide>details>summary{cursor:pointer;padding:15px;background:#244652;color:white;font-size:14px}.tracker-wide>details[open]{margin-bottom:15px}.data-badge{overflow-wrap:anywhere}.tracker-section .arrival-board .no-results{color:var(--ink)}
+@media(max-width:700px){.tracker-section{gap:20px}.tracker-section .tracker-select{margin:12px 0;max-width:none}.tracker-section h2{font-size:29px}.live-map{height:300px}.tracker-section .arrival-board{padding:18px}.vehicle-table{font-size:12px}}
 .route-schematic{display:flex;gap:18px;overflow-x:auto;padding:22px 8px;border-block:1px solid var(--line);background:#f0f4e8}.route-schematic span{flex:1;min-width:95px;font-size:11px}.route-schematic b{display:block;color:#426522;font-size:25px;border-bottom:3px solid #789846;margin-bottom:12px}.route-day{display:block;font-size:12px;margin:20px 0}.route-day select{display:block;padding:10px;margin-top:6px;width:100%;border:1px solid var(--line);background:white}.route-experience{margin-top:30px}.route-experience h3{margin-top:25px}.revision-diff{white-space:pre-wrap;overflow-wrap:anywhere;font-size:11px;background:#f0f3eb;padding:12px}
 @media(max-width:700px){.form-fields .primary{flex:1 0 100%;width:100%;white-space:nowrap}.form-fields label:nth-last-of-type(1){flex:1 0 100%}.hero-art{min-height:210px}.hero-copy{padding-top:30px;padding-bottom:25px}.hero h1{font-size:44px}.concept-links{gap:12px}.route-schematic{flex-wrap:wrap}.route-schematic span{flex:1 0 40%}}
 [role=tabpanel]{padding:4px 0}
 @media(max-width:820px){.news-list,.community-two{grid-template-columns:1fr}.concept{flex-wrap:wrap;gap:6px}}
+
+/* Live tracker */
+.tracker-section{padding-bottom:70px}
+.tracker-wide{grid-column:1/-1;margin-top:10px}
+.live-map{height:440px;border-radius:6px;overflow:hidden;background:#dfe7e3;border:1px solid #2c5560;color:var(--ink)}
+.map-fallback{padding:24px;color:var(--ink)!important;max-width:none!important}
+.data-badge{max-width:380px!important;font-size:12px!important;line-height:1.5;padding:10px 12px;border-radius:4px;border-left:4px solid #d4ed62;background:#173c44;color:#e6eeee!important}
+.data-badge span{color:#c4d1d2}
+.data-badge.is-sample{border-left-color:#f2b84b;background:#3b3320}
+.status-dot.is-sample{background:#c58a12}
+.arrival.is-mine .arrival-time{color:#1b4a12}
+.arrival-board .no-results{color:var(--muted);font-size:13px;margin:12px 0}
+.arrival-board h3:empty{display:none}
+.arrival .route-number{display:inline-grid;place-items:center;border-radius:50%;font-weight:700;flex-shrink:0}
+.bus-pin span{display:block;min-width:34px;height:24px;line-height:24px;border-radius:12px;text-align:center;font:700 12px/24px Manrope,Arial,sans-serif;border:2px solid #fff;box-shadow:0 1px 4px #0008}
+.vehicle-table{margin-top:14px;background:#173c44;border-radius:6px;padding:12px 16px;color:#e6eeee}
+.vehicle-table summary{cursor:pointer;font-weight:700;font-size:13px}
+.table-scroll{overflow-x:auto;margin-top:10px}
+.vehicle-table table{width:100%;border-collapse:collapse;font-size:12px}
+.vehicle-table caption{text-align:left;color:#c4d1d2;padding-bottom:8px}
+.vehicle-table th,.vehicle-table td{padding:7px 10px;text-align:left;border-top:1px solid #2c5560}
+.leaflet-container{font-family:inherit}
+@media(max-width:820px){.live-map{height:340px}.tracker-section{gap:24px}}
+
+/* Route detail (live) */
+.rd-map{height:320px;margin:14px 0;border-radius:6px;overflow:hidden;background:#dfe7e3;border:1px solid var(--line)}
+.rd-map.map-fallback{height:auto;padding:16px}
+.stop-list .tp{font-weight:700}
+.stop-list small{font-weight:400;color:var(--muted)}
+.rd-bus-list{padding-left:18px;margin:6px 0 14px}
+.rd-bus-list li{margin-bottom:8px}
+#modal-body .data-badge{max-width:none!important}
+#modal-body .arrival{color:var(--ink)}

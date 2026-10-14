@@ -1,0 +1,13 @@
+const vm=require('node:vm'),fs=require('node:fs'),assert=require('node:assert/strict');
+const elements={},element=()=>({innerHTML:'',textContent:'',value:'',className:'',disabled:false,options:[],addEventListener(){},focus(){},scrollIntoView(){}});
+const query=s=>elements[s]||(elements[s]=element());
+const pending={},depPending={}; const wait=(pool,id)=>new Promise(resolve=>{(pool[id]||(pool[id]=[])).push(resolve)});
+const source={mode:'live',updated:Date.now()};
+const transit={info:()=>source,status:()=>source,onStatus(){},routes:()=>Promise.resolve([{id:'9',routeId:9,name:'Nine',color:'#123456'},{id:'18',routeId:18,name:'Eighteen',color:'#123456'}]),stops:id=>wait(pending,id),trace:()=>Promise.resolve([]),vehicles:()=>Promise.resolve([]),departures:id=>wait(depPending,id)};
+const context={document:{documentElement:{lang:'en'},hidden:false,querySelector:query,addEventListener(){}},window:{},TRANSIT:transit,Date,console,setInterval(){return 1},clearInterval(){}};
+vm.createContext(context);vm.runInContext(fs.readFileSync('dist/tracker.js','utf8'),context);
+const tick=()=>new Promise(resolve=>setImmediate(resolve));
+(async()=>{await tick();query('#tracker-route').value='18';query('#tracker-route').onchange.call(query('#tracker-route'));await tick();
+pending[18][0]([{id:180,name:'New stop',timepoint:true},{id:181,name:'Second stop'}]);await tick();
+pending[9][0]([{id:90,name:'Obsolete route stop',timepoint:true}]);await tick();assert.ok(query('#tracker-stop').innerHTML.includes('New stop'));assert.ok(!query('#tracker-stop').innerHTML.includes('Obsolete'));
+query('#tracker-stop').value='181';query('#tracker-stop').onchange.call(query('#tracker-stop'));await tick();depPending[181][0]([{routeId:18,destination:'Current result',minutes:5,prediction:'estimated',delayMin:0}]);await tick();depPending[180][0]([{routeId:18,destination:'Obsolete result',minutes:6}]);await tick();assert.ok(query('#arrivals').innerHTML.includes('Current result'));assert.ok(!query('#arrivals').innerHTML.includes('Obsolete result'));console.log('PASS: delayed route and stop responses cannot overwrite current selections');})().catch(e=>{console.error(e);process.exitCode=1});

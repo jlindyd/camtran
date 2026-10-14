@@ -3,3 +3,5 @@ rfp-extract.txt
 *.zip
 *.tar.gz
 finish-pass.py
+enhance-tracker.py
+finalize-enhancement.py
