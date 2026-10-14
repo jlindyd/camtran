@@ -24,7 +24,7 @@ dist/
   admin.html, admin.js, admin.css  Editor UI. Also uses ONLY the public CMS API.
   cms/adapter.js                   The seam: providers, workflow rules, history, audit.
   cms/content.js                   Seed content for the mock provider (sample data).
-  tracker.js                       Live tracker section (map, arrivals, vehicle table).
+  live.html, live.js, live.css     Full-screen live tracker page: route picker, map, departures, buses, stops.
   transit/transit-adapter.js       Second seam: operational data (routes, vehicles, stops, arrivals, messages).
   transit/sample.js                Recorded, sanitized snapshot used as the fallback/offline provider.
 tools/make-snapshot.cjs            Re-records transit/sample.js from the public feed.
@@ -40,7 +40,7 @@ verify-cms.cjs, verify-transit.cjs Node tests (no dependencies).
 - Polling runs only while the tab is visible: vehicles every 15 s, arrivals every 20 s, notices every 60 s. Vehicles with no signal for 10 minutes are left off the map and flagged in the vehicle table.
 - The map is not the only way to read the data: the vehicle list is a real table, and the map is keyboard operable.
 - Active myStop notices are shown beside CMS alerts, labelled with their source.
-- **Route directory and detail pages are live.** The route list is the 22 routes from the feed (colors, names, urban/rural by number); the CMS supplies editorial text where it has it (translated names, areas served). Each detail page shows a route map, ordered stops per direction (from `RouteDetails`), live departures at a chosen stop (click a stop on the map or use the picker), buses on the route, and notices for that route from both the CMS and myStop. Real timetables are not reproduced; the page links to the official schedules. The recorded sample covers every route's stops and line; departures are recorded for about ten stops.
+- **The live tracker is its own full-screen page (`live.html`).** The home page links to it from the header, the "Track a bus" tab, a short call-to-action section and every route row; deep links work (`live.html?route=9&dir=I&stop=271`). A sidebar holds a searchable route picker, direction toggle, stop picker, next departures, buses on the route (click one to find it on the map), the ordered stop list (click one to select it and pan to it) and notices from the CMS and myStop; the map fills the rest of the screen (on phones it stays pinned above the panel). "Show all buses" returns to the whole-system view. The route directory is the 22 feed routes; the CMS supplies editorial text where it has it. Real timetables are not reproduced; the page links to the official schedules.
 - External dependencies: Leaflet 1.9.4 from cdnjs and OpenStreetMap tiles (attribution shown). Subresource-integrity hashes are not set; add them before production.
 
 `CMS.configure({ provider: 'mock' | 'rest', baseUrl, headers })` selects the provider. The mock provider overlays browser-local edits on the seed content. The `rest` provider maps the same calls to the DYD CMS HTTP API, so connecting the real CMS changes no site or editor code.
@@ -65,8 +65,8 @@ Item `status` is one of `draft`, `in_review`, `approved`, `published`, `archived
 - Dynamic service alerts and an emergency banner, severity ordering, scheduled start/end windows, multi-alert detail dialog
 - News and announcements, event calendar, fares, routes: all CMS-driven
 - Complete English/Spanish switching, including CMS content (parity required by the editor before saving)
-- Live tracker: all 22 routes, route trace and stops on a map, live vehicle positions and status, next arrivals at a chosen stop, accessible vehicle table, automatic fallback to a recorded sample
-- Route search and urban/rural filter over the live directory, route detail with direction switching, sample trip result
+- Full-screen live tracker page: all 22 routes, route trace and stops on a map, live vehicle positions and status, next departures at a chosen stop, deep links, automatic fallback to a recorded sample (per-dataset LIVE/SAMPLE labels)
+- Route search and urban/rural filter over the live directory, route pages with direction switching on the live tracker page, sample trip result
 - CMS editor: roles (editor, approver, administrator), draft → review → approve → publish, version history with restore, audit log, preview, live update of the public site across tabs
 - Keyboard-operable tabs (arrow/Home/End), skip link, dialog focus return, labelled controls, `aria-live` results
 
@@ -87,3 +87,7 @@ Published revisions remain visible while drafts are edited or restored. Publicat
 ## Tracker reliability refinement
 
 Each returned dataset carries its own provenance. Vehicle and arrival badges are independent; recorded data cannot become live because another endpoint succeeds. Requests carry selection tokens, route details filter departures by direction, and all mapped stops are selectable. Scheduled and estimated departures are distinguished. Vehicle reports include timestamps, demo notices are explicit, the map expands on demand, and route details transfer their selection to tracking. Run `node verify-transit.cjs`, `node verify-selection.cjs` and `node verify-cms.cjs`. Production must use a supported vendor agreement, a filtering/caching server, monitoring, licensed tiles, and validated accessibility. Browser field filtering does not prevent raw vendor responses from reaching the browser.
+
+## Full-screen tracker verification
+
+The full-screen tracker filters departures by selected direction and labels schedule-only results. CMS sample notices are explicitly marked in English/Spanish. Stale buses remain listed as No recent signal but are excluded from map positions. Every route stop is selectable. `node verify-selection.cjs` now exercises live.js, including A-to-B-to-A delayed responses, direction filtering, scheduled labels, stale handling and notice labels.

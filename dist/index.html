@@ -6,7 +6,6 @@
 <meta name="robots" content="noindex,nofollow">
 <meta name="description" content="An independent CamTran rider experience prototype for RFP 26-05.">
 <title>CamTran — A better way to get there.</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -28,7 +27,7 @@
   </nav>
   <div class="header-actions">
     <button id="language" type="button" lang="es" aria-label="Cambiar a español">ES</button>
-    <a class="track-button" href="#tracker" data-i="track">Track my bus ↗</a>
+    <a class="track-button" href="live.html" data-i="track">Track my bus ↗</a>
   </div>
 </header>
 
@@ -76,7 +75,7 @@
         </div>
       </form>
     </div>
-    <div role="tabpanel" id="panel-track" aria-labelledby="tab-track" hidden><p><span data-i="trackHint">Select a route in the arrival preview below.</span> <a class="text-link dark" href="#tracker" data-i="trackLink">Explore bus tracking →</a></p></div>
+    <div role="tabpanel" id="panel-track" aria-labelledby="tab-track" hidden><p><span data-i="trackHint">See every bus on a live map and the next departures at your stop.</span> <a class="text-link dark" href="live.html" data-i="trackLink">Open the live tracker →</a></p></div>
     <div role="tabpanel" id="panel-find" aria-labelledby="tab-find" hidden><p><span data-i="findHint">Search by route number or destination below.</span> <a class="text-link dark" href="#routes" data-i="findLink">Browse route examples →</a></p></div>
     <div id="tool-result" aria-live="polite"></div>
   </section>
@@ -100,29 +99,16 @@
     <nav id="route-pagination" class="route-pagination" aria-label="Route pages" hidden></nav>
   </section>
 
-  <section id="tracker" class="tracker-section" aria-labelledby="tracker-h">
+  <section id="tracker" class="tracker-section tracker-cta" aria-labelledby="tracker-h">
     <div>
       <p class="eyebrow" data-i="trackerEye">LESS GUESSING. MORE GOING.</p>
       <h2 id="tracker-h" data-i="trackerTitle">Your next bus,<br>at a glance.</h2>
-      <p data-i="trackerText">See where buses are right now and when the next one reaches your stop.</p>
-      <label class="tracker-select"><span data-i="route">Route</span><select id="tracker-route"><option>Loading routes…</option></select></label>
-      <label class="tracker-select"><span data-i="stopSearch">Search stops</span><input id="tracker-stop-search" type="search" autocomplete="off" aria-describedby="stop-search-status"></label><p id="stop-search-status" role="status" class="small"></p><label class="tracker-select"><span data-i="stopLabel">Stop</span><select id="tracker-stop" disabled></select></label>
-      <p id="data-badge" class="data-badge" role="status"></p>
-      <a class="text-link" href="https://live.camtranbus.com/" data-i="liveLink">Open CamTran’s existing live tracker ↗</a>
+      <p data-i="trackerText">See where buses are right now and when the next one reaches your stop, on a full-screen live map.</p>
+      <a class="primary inline" href="live.html" data-i="openLive">Open the live tracker →</a>
     </div>
-    <div class="arrival-board">
-      <div class="board-heading"><span id="board-status"></span><span id="board-updated"></span></div>
-      <h3 id="board-stop"></h3>
-      <p id="board-sub"></p>
-      <div id="arrivals" aria-live="polite"></div>
-      <div class="board-foot" id="board-foot"></div>
-    </div>
-    <div class="tracker-wide">
-      <details id="tracker-map-toggle"><summary data-i="showMap">Explore the map</summary><p id="map-source" class="small"></p><div id="live-map" class="live-map" role="region" aria-label="Live bus map"></div></details>
-      <details class="vehicle-table">
-        <summary id="veh-summary"></summary>
-        <div class="table-scroll"><table><caption id="veh-caption"></caption><thead id="veh-head"></thead><tbody id="veh-body"></tbody></table></div>
-      </details>
+    <div>
+      <p class="eyebrow" data-i="quickRoutes">JUMP TO A ROUTE</p>
+      <div id="cta-chips" class="cta-chips"></div>
     </div>
   </section>
 
@@ -190,10 +176,8 @@
 
 <script src="cms/content.js"></script>
 <script src="cms/adapter.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="transit/sample.js"></script>
 <script src="transit/transit-adapter.js"></script>
 <script src="app.js"></script>
-<script src="tracker.js"></script>
 </body>
 </html>

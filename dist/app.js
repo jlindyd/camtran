@@ -17,11 +17,11 @@
     heroFoot: 'Conectamos a nuestros vecinos.<br>Unimos a nuestras comunidades.', busCard: 'Lo bueno está en camino.', busSub: 'Vamos a tu destino.',
     plan: '↗ Planificar viaje', trackTab: '◉ Rastrear autobús', findTab: '≡ Buscar ruta', sample: 'DEMOSTRACIÓN · DATOS DE EJEMPLO',
     from: 'Origen', to: 'Destino', when: 'Cuándo', leaveNow: 'Salir ahora (demo)', tomorrow: 'Mañana por la mañana (demo)', findTrip: 'Buscar mi viaje →',
-    trackHint: 'Selecciona una ruta en la vista de llegadas.', trackLink: 'Explorar el rastreo →', findHint: 'Busca por número de ruta o destino.', findLink: 'Ver rutas de ejemplo →',
+    trackHint: 'Mira todos los autobuses en un mapa en vivo y las próximas salidas en tu parada.', trackLink: 'Abrir el rastreador en vivo →', findHint: 'Busca por número de ruta o destino.', findLink: 'Ver rutas de ejemplo →',
     routesEye: 'UNA RUTA PARA TU DÍA', routesTitle: '¿A dónde vas?', routesIntro: 'Encuentra tu conexión en Johnstown<br>y el norte del condado de Cambria.',
     searchPh: 'Buscar número de ruta o destino', fAll: 'Todas las rutas', fUrban: 'Urbanas', fRural: 'Rurales / CamTran+',
     routesNote: 'Rutas y paradas del sistema público de rastreo de CamTran. Los horarios no se reproducen aquí; usa las salidas en vivo o los horarios oficiales.',
-    trackerEye: 'MENOS ADIVINAR. MÁS VIAJAR.', trackerTitle: 'Tu próximo autobús,<br>de un vistazo.', trackerText: 'Mira dónde están los autobuses ahora y cuándo llega el próximo a tu parada.',
+    openLive: 'Abrir el rastreador en vivo →', quickRoutes: 'IR A UNA RUTA', trackerEye: 'MENOS ADIVINAR. MÁS VIAJAR.', trackerTitle: 'Tu próximo autobús,<br>de un vistazo.', trackerText: 'Mira dónde están los autobuses ahora y cuándo llega el próximo a tu parada, en un mapa en vivo a pantalla completa.',
     route: 'Ruta', stopLabel: 'Parada', liveLink: 'Abrir el rastreador en vivo de CamTran ↗', arrPrev: 'VISTA DE LLEGADAS', demoData: 'DATOS DE EJEMPLO',
     illStop: 'Parada ilustrativa · no es información de salidas en vivo', boardFoot: '◷ Solo horarios de ejemplo. Usa el rastreador en vivo para viajar.',
     faresEye: 'UN POCO DE PLANIFICACIÓN. MUCHAS POSIBILIDADES.', faresTitle: 'Tu viaje. Tu forma de pagar.', confirmFares: 'Confirmar tarifas vigentes ↗',
@@ -151,7 +151,7 @@
   setInterval(function () { if (!document.hidden) loadContent(); }, 30000);
   document.addEventListener('visibilitychange', function () { if (!document.hidden) loadContent(); });
 
-  function renderAll() { renderAlerts(); renderRoutes(); renderFares(); renderNews(); }
+  function renderAll() { renderAlerts(); renderRoutes(); renderCtaChips(); renderFares(); renderNews(); }
 
   function renderAlerts() {
     var region = $('#alert-region');
@@ -183,7 +183,7 @@
     state.page = Math.min(state.page, pages);
     var start = (state.page - 1) * 5;
     $('#route-list').innerHTML = shown.length ? shown.slice(start, start + 5).map(function (r) {
-      return '<button class="route-row" type="button" data-route="' + esc(r.id) + '"><span class="route-number"' + (r.color ? ' style="background:' + r.color + ';color:' + contrastInk(r.color) + '"' : '') + '>' + esc(r.id) + '</span><div><h3>' + esc(r.name) + '</h3>' + (r.places ? '<p>' + esc(r.places) + '</p>' : '') + '</div><span class="route-type">' + (r.area === 'urban' ? t.urban : t.rural) + '</span><b aria-hidden="true">↗</b></button>';
+      return '<a class="route-row" href="live.html?route=' + encodeURIComponent(r.id) + '"><span class="route-number"' + (r.color ? ' style="background:' + r.color + ';color:' + contrastInk(r.color) + '"' : '') + '>' + esc(r.id) + '</span><div><h3>' + esc(r.name) + '</h3>' + (r.places ? '<p>' + esc(r.places) + '</p>' : '') + '</div><span class="route-type">' + (r.area === 'urban' ? t.urban : t.rural) + '</span><b aria-hidden="true">↗</b></a>';
     }).join('') : '<p class="no-results">' + esc(t.noRoutes) + '</p>';
     var es = state.lang === 'es';
     $('#route-count').textContent = shown.length ? (es ? 'Mostrando ' : 'Showing ') + (start + 1) + '–' + Math.min(start + 5, shown.length) + (es ? ' de ' : ' of ') + shown.length + (es ? ' rutas' : ' routes') : t.shown(0);
@@ -192,186 +192,18 @@
     pagination.hidden = pages <= 1;
     pagination.innerHTML = '<button type="button" data-page="' + (state.page - 1) + '"' + (state.page === 1 ? ' disabled' : '') + '>' + (es ? '← Anterior' : '← Previous') + '</button>' + Array.from({ length: pages }, function (_, i) { var n = i + 1; return '<button type="button" data-page="' + n + '" aria-label="' + (es ? 'Página ' : 'Page ') + n + '"' + (n === state.page ? ' aria-current="page"' : '') + '>' + n + '</button>'; }).join('') + '<button type="button" data-page="' + (state.page + 1) + '"' + (state.page === pages ? ' disabled' : '') + '>' + (es ? 'Siguiente →' : 'Next →') + '</button>';
     $$('#route-pagination [data-page]').forEach(function (button) { button.onclick = function () { state.page = Number(button.dataset.page); renderRoutes(); var current = $('#route-pagination [aria-current="page"]'); if (current) current.focus(); }; });
-    $$('[data-route]').forEach(function (b) { b.onclick = function () { routeDetail(b.dataset.route); }; });
   }
 
-  /* ---------- route detail (live route data) ---------- */
-  var RD = {
-    en: {
-      stopsH: 'Stops, in order', mainStop: 'Main stop', departH: 'Next departures', from: 'At stop', due: 'Due', min: 'min', onTime: 'On time',
-      late: function (n) { return n + ' min late'; }, early: function (n) { return n + ' min early'; },
-      noDeps: 'No upcoming departures reported for this route at this stop.', noSampleDeps: 'The recorded sample has no departures for this stop.',
-      busesH: 'Buses on this route', busesNow: function (n) { return n + ' bus' + (n === 1 ? '' : 'es') + ' reporting now'; }, noBuses: 'No buses on this route are reporting right now.',
-      toward: 'To', lastStop: 'Last stop', noSignal: 'No recent signal', noticesH: 'Notices for this route', noNotices: 'No notices for this route.',
-      live: 'LIVE', sample: 'SAMPLE DATA', updated: 'Updated', recorded: 'Recorded', liveNote: 'Live from CamTran’s public myStop feed. Independent prototype; confirm with CamTran before you travel.',
-      sampleNote: 'Live feed unavailable or not selected. Showing a recorded sample; positions and times are not current.',
-      mapDown: 'The map could not load. Use the stop list below.', mapLabel: 'Route map', dirLabel: 'Direction', loading: 'Loading live route data…', failed: 'Route data could not be loaded.',
-      nodetail: 'Detailed stop data is not available for this route in this prototype.', boardH: 'Boarding assistance',
-      boardText: 'Contact CamTran to confirm stop access, ramp boarding, and any accommodations you need.', a11yLink: 'Official accessibility information ↗',
-      sched: 'Official schedules and downloadable PDFs ↗', tt: 'Timetables are not reproduced here. Use the departures above or the official schedules.'
-    },
-    es: {
-      stopsH: 'Paradas, en orden', mainStop: 'Parada principal', departH: 'Próximas salidas', from: 'En la parada', due: 'Llegando', min: 'min', onTime: 'A tiempo',
-      late: function (n) { return n + ' min de retraso'; }, early: function (n) { return n + ' min antes'; },
-      noDeps: 'No hay salidas próximas de esta ruta en esta parada.', noSampleDeps: 'La muestra grabada no tiene salidas para esta parada.',
-      busesH: 'Autobuses en esta ruta', busesNow: function (n) { return n + ' autobús' + (n === 1 ? '' : 'es') + ' reportando ahora'; }, noBuses: 'Ningún autobús de esta ruta está reportando ahora.',
-      toward: 'Hacia', lastStop: 'Última parada', noSignal: 'Sin señal reciente', noticesH: 'Avisos para esta ruta', noNotices: 'No hay avisos para esta ruta.',
-      live: 'EN VIVO', sample: 'DATOS DE EJEMPLO', updated: 'Actualizado', recorded: 'Grabado', liveNote: 'En vivo desde el sistema público myStop de CamTran. Prototipo independiente; confirma con CamTran antes de viajar.',
-      sampleNote: 'El sistema en vivo no está disponible o no está seleccionado. Se muestra una muestra grabada; las posiciones y horas no son actuales.',
-      mapDown: 'No se pudo cargar el mapa. Usa la lista de paradas.', mapLabel: 'Mapa de la ruta', dirLabel: 'Dirección', loading: 'Cargando datos de la ruta en vivo…', failed: 'No se pudieron cargar los datos de la ruta.',
-      nodetail: 'En este prototipo no hay datos detallados de paradas para esta ruta.', boardH: 'Ayuda para abordar',
-      boardText: 'Consulta a CamTran para confirmar el acceso a la parada, el uso de rampas y las adaptaciones que necesitas.', a11yLink: 'Información oficial de accesibilidad ↗',
-      sched: 'Horarios oficiales y PDF descargables ↗', tt: 'Los horarios no se reproducen aquí. Usa las salidas de arriba o los horarios oficiales.'
-    }
-  };
-  var rdState = null;
-  function contrastInk(hex) { var n = parseInt(String(hex).slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255; return (r * 299 + g * 587 + b * 114) / 1000 > 150 ? '#102d39' : '#fff'; }
-  function rdClose() {
-    if (!rdState) return;
-    clearInterval(rdState.timer);
-    if (rdState.map) rdState.map.remove();
-    rdState = null;
-  }
+  // Route detail lives on the full-screen live page.
+  function routeDetail(id) { location.href = 'live.html?route=' + encodeURIComponent(id); }
 
-  function routeDetail(id) {
-    var r = state.routes.filter(function (x) { return x.id === id; })[0];
-    if (!r) return;
-    var d = RD[state.lang], t = T();
-    var official = r.area === 'rural' ? 'https://www.camtranbus.com/schedules/camtran-plus-rural-routes/' : 'https://www.camtranbus.com/schedules/camtran-urban-routes/';
-    var head = '<p class="eyebrow">' + esc(r.area === 'urban' ? t.urban : t.rural) + ' / ' + esc(r.id) + '</p><h2>' + esc(r.name) + '</h2>';
-    if (!r.live) { // CMS-only fallback when the transit adapter returns no routes at all
-      openModal(head + '<p>' + esc(d.nodetail) + '</p><a href="' + official + '">' + esc(d.sched) + '</a>');
-      return;
-    }
-    openModal(head + '<p id="rd-badge" class="data-badge is-sample" role="status"></p><p id="rd-loading" aria-live="polite">' + esc(d.loading) + '</p><div id="rd-body" hidden></div>');
-    modalCleanup = rdClose;
-    var token = rdState = { route: r, map: null, timer: null, dir: 0, detail: null, trace: [], vehicles: [], stop: null, layers: {} };
-    Promise.all([TRANSIT.routeDetail(r.routeId), TRANSIT.trace(r), TRANSIT.vehicles()]).then(function (res) {
-      if (rdState !== token) return; // dialog was closed meanwhile
-      token.mapSource = [TRANSIT.info(res[0]), TRANSIT.info(res[1])]; token.detail = res[0]; token.trace = res[1]; token.vehicles = res[2];
-      buildRouteDetail(official);
-    }).catch(function () { if (rdState === token) $('#rd-loading').textContent = d.failed; });
+  function renderCtaChips() {
+    var el = $('#cta-chips'); if (!el) return;
+    el.innerHTML = state.routes.slice(0, 8).map(function (r) {
+      return '<a class="cta-chip" href="live.html?route=' + encodeURIComponent(r.id) + '"><span class="route-number" style="background:' + r.color + ';color:' + contrastInk(r.color) + '">' + esc(r.id) + '</span>' + esc(r.name) + '</a>';
+    }).join('');
   }
-
-  function rdBadge() {
-    var d = RD[state.lang], s = TRANSIT.info(rdState.vehicles), el = $('#rd-badge'); if (!el) return;
-    var locale = state.lang === 'es' ? 'es-US' : 'en-US';
-    var when = s.mode === 'live' ? d.updated + ' ' + new Date(s.updated).toLocaleTimeString(locale, { hour: 'numeric', minute: '2-digit', second: '2-digit', timeZone: 'America/New_York' })
-      : d.recorded + ' ' + (s.updated ? new Date(s.updated).toLocaleString(locale, { timeZone: 'America/New_York', dateStyle: 'medium', timeStyle: 'short' }) : '');
-    el.className = 'data-badge ' + (s.mode === 'live' ? 'is-live' : 'is-sample');
-    el.innerHTML = '<strong>' + (state.lang === 'es' ? 'Vehículos · ' : 'Vehicles · ') + (s.mode === 'live' ? '● ' + d.live : '◌ ' + d.sample) + '</strong> · ' + esc(when) + '<br><span>' + esc(s.mode === 'live' ? d.liveNote : d.sampleNote) + '</span><br>' + (state.lang === 'es' ? 'Mapa y paradas: ' : 'Map and stops: ') + ((rdState.mapSource || []).every(function (m) { return m.mode === 'live'; }) ? d.live : d.sample);
-  }
-
-  function buildRouteDetail(officialHref) {
-    var s = rdState, r = s.route, d = RD[state.lang], t = T();
-    var dirs = s.detail.directions;
-    $('#rd-loading').hidden = true;
-    var notices = state.alerts.filter(function (a) { return !a.routes || !a.routes.length || a.routes.indexOf(r.id) !== -1; });
-    var body = $('#rd-body'); body.hidden = false;
-    body.innerHTML =
-      '<div id="rd-map" class="rd-map" role="region" aria-label="' + esc(d.mapLabel) + '"></div>' +
-      (dirs.length > 1 ? '<div class="filters" role="group" aria-label="' + esc(d.dirLabel) + '" id="rd-dirs">' + dirs.map(function (x, i) { return '<button type="button" data-dir="' + i + '" class="' + (i === 0 ? 'selected' : '') + '" aria-pressed="' + (i === 0) + '">' + esc(x.code === 'O' ? t.outbound : x.code === 'I' ? t.inbound : x.name) + '</button>'; }).join('') + '</div>' : '') +
-      '<p><button class="primary" id="rd-track">' + (state.lang === 'es' ? 'Rastrear esta ruta →' : 'Track this route →') + '</button></p><h3>' + esc(d.departH) + '</h3><label class="route-day">' + esc(d.from) + '<select id="rd-stop"></select></label><div id="rd-deps" aria-live="polite"></div>' +
-      '<h3>' + esc(d.busesH) + '</h3><div id="rd-vehicles" aria-live="polite"></div>' +
-      '<h3>' + esc(d.stopsH) + '</h3><ol class="stop-list" id="rd-stops"></ol>' +
-      '<h3>' + esc(d.noticesH) + '</h3>' + (notices.map(function (a) { return '<p class="preview-notice"><strong>' + (!a.source ? 'DEMO · ' : '') + esc(a.title) + '</strong><br>' + esc(a.body) + '</p>'; }).join('') || '<p>' + esc(d.noNotices) + '</p>') +
-      '<h3>' + esc(d.boardH) + '</h3><p>' + esc(d.boardText) + '</p><a href="https://www.camtranbus.com/disability-services/">' + esc(d.a11yLink) + '</a>' +
-      '<p class="small">' + esc(d.tt) + '</p><p><a href="' + officialHref + '">' + esc(d.sched) + '</a></p>';
-    rdBadge();
-    initRouteMap();
-    $$('#rd-dirs [data-dir]').forEach(function (b) {
-      b.onclick = function () {
-        s.dir = Number(b.dataset.dir);
-        $$('#rd-dirs [data-dir]').forEach(function (x) { var on = x === b; x.classList.toggle('selected', on); x.setAttribute('aria-pressed', on); });
-        renderRdDirection(true);
-      };
-    });
-    $('#rd-track').onclick = function () { var target = { routeId: s.route.routeId, stopId: s.stop }; modal.close(); document.dispatchEvent(new CustomEvent('camtran:track', { detail: target })); };
-    $('#rd-stop').onchange = function () { s.stop = Number(this.value); drawRdStops(); refreshRdDepartures(); };
-    renderRdDirection(true);
-    renderRdVehicles();
-    s.timer = setInterval(function () { if (!document.hidden) { refreshRdVehicles(); refreshRdDepartures(); } }, 20000);
-  }
-
-  function initRouteMap() {
-    var s = rdState, r = s.route, holder = $('#rd-map');
-    if (!window.L) { holder.textContent = RD[state.lang].mapDown; holder.className = 'rd-map map-fallback'; return; }
-    var L = window.L;
-    s.map = L.map(holder, { scrollWheelZoom: false });
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(s.map);
-    s.layers.stops = L.layerGroup().addTo(s.map); s.layers.vehicles = L.layerGroup().addTo(s.map);
-    (s.trace || []).forEach(function (pts) {
-      L.polyline(pts, { color: '#102d39', weight: 7, opacity: .55, interactive: false }).addTo(s.map);
-      L.polyline(pts, { color: r.color, weight: 4, interactive: false }).addTo(s.map);
-    });
-    s.map.setView([40.32, -78.92], 11);
-    setTimeout(function () { if (rdState === s && s.map) { s.map.invalidateSize(); fitRouteMap(); } }, 60);
-  }
-  function fitRouteMap() {
-    var s = rdState, pts = [];
-    (s.trace || []).forEach(function (l) { l.forEach(function (p) { pts.push(p); }); });
-    if (!pts.length) s.detail.directions.forEach(function (dir) { dir.stops.forEach(function (x) { if (x.lat != null) pts.push([x.lat, x.lng]); }); });
-    if (pts.length) s.map.fitBounds(pts, { padding: [24, 24] });
-  }
-
-  function renderRdDirection(resetStop) {
-    var s = rdState, d = RD[state.lang], dir = s.detail.directions[s.dir] || { stops: [] };
-    $('#rd-stops').innerHTML = dir.stops.length ? dir.stops.map(function (x) { return '<li' + (x.timepoint ? ' class="tp"' : '') + '>' + esc(x.name) + (x.timepoint ? ' <small>(' + esc(d.mainStop) + ')</small>' : '') + '</li>'; }).join('') : '<li>' + esc(d.nodetail) + '</li>';
-    var pickable = dir.stops;
-    $('#rd-stop').innerHTML = pickable.map(function (x) { return '<option value="' + x.id + '">' + esc(x.name) + '</option>'; }).join('');
-    if (resetStop) { s.stop = pickable.length ? pickable[0].id : null; if (s.stop != null) $('#rd-stop').value = String(s.stop); }
-    drawRdStops();
-    refreshRdDepartures();
-  }
-  function drawRdStops() {
-    var s = rdState; if (!s || !s.map) return;
-    s.layers.stops.clearLayers();
-    var dir = s.detail.directions[s.dir] || { stops: [] };
-    dir.stops.forEach(function (x) {
-      if (x.lat == null) return;
-      var on = x.id === s.stop;
-      var m = window.L.circleMarker([x.lat, x.lng], { radius: on ? 9 : (x.timepoint ? 6 : 4), color: '#102d39', weight: on ? 3 : 1.5, fillColor: on ? '#d4ed62' : '#fff', fillOpacity: 1 });
-      m.bindTooltip(x.name);
-      m.on('click', function () { s.stop = x.id; var sel = $('#rd-stop'); if (sel && Array.prototype.some.call(sel.options, function (o) { return o.value === String(x.id); })) sel.value = String(x.id); drawRdStops(); refreshRdDepartures(); });
-      m.addTo(s.layers.stops);
-    });
-  }
-
-  function rdStatus(deviation, stale) { var d = RD[state.lang]; return stale ? d.noSignal : deviation >= 2 ? d.late(deviation) : deviation <= -2 ? d.early(-deviation) : d.onTime; }
-  function refreshRdDepartures() {
-    var s = rdState; if (!s || s.stop == null) return;
-    var request = s.depRequest = (s.depRequest || 0) + 1, stopId = s.stop, direction = s.detail.directions[s.dir]; var token = s, d = RD[state.lang], el = $('#rd-deps');
-    el.textContent = d.loading; TRANSIT.departures(stopId).then(function (list) {
-      if (rdState !== token || request !== s.depRequest || s.stop !== stopId) return;
-      var source = TRANSIT.info(list); var mine = list.filter(function (x) { return x.routeId === s.route.routeId && (!direction || !direction.code || String(x.direction).toLowerCase() === String(direction.name).toLowerCase() || String(x.direction).toLowerCase() === String(direction.code).toLowerCase()); }).slice(0, 4);
-      el.innerHTML = mine.length ? mine.map(function (x) {
-        var label = x.delayMin >= 2 ? d.late(x.delayMin) : x.delayMin <= -2 ? d.early(-x.delayMin) : d.onTime;
-        label = x.prediction === 'estimated' ? label : (state.lang === 'es' ? 'Horario programado' : 'Scheduled time'); label = (source.mode === 'live' ? 'LIVE' : 'SAMPLE DATA') + ' · ' + label;
-        return '<div class="arrival"><span class="route-number" style="background:' + s.route.color + ';color:' + contrastInk(s.route.color) + '">' + esc(s.route.id) + '</span><div><strong>' + esc(x.destination || x.direction) + '</strong><small>' + esc(x.direction) + ' · ' + esc(label) + '</small></div><div class="arrival-time">' + (x.minutes <= 1 ? esc(d.due) : x.minutes + '<small>' + esc(d.min) + '</small>') + '</div></div>';
-      }).join('') : '<p class="no-results">' + esc(source.mode !== 'live' ? d.noSampleDeps : d.noDeps) + '</p>';
-      rdBadge();
-    }, function () { /* adapter already falls back to the sample */ });
-  }
-  function rdVehicles() {
-    var s = rdState, live = TRANSIT.info(rdState.vehicles).mode === 'live';
-    return s.vehicles.filter(function (v) { return v.routeId === s.route.routeId; }).map(function (v) { return Object.assign({ stale: !!(live && (!v.updated || Date.now() - v.updated > 600000)) }, v); });
-  }
-  function renderRdVehicles() {
-    var s = rdState, d = RD[state.lang], list = rdVehicles(), shown = list.filter(function (v) { return !v.stale; });
-    $('#rd-vehicles').innerHTML = list.length ? '<p>' + esc(d.busesNow(shown.length)) + '</p><ul class="rd-bus-list">' + list.map(function (v) {
-      return '<li><strong>' + esc(d.toward) + ' ' + esc(v.destination) + '</strong> · ' + esc(rdStatus(v.deviation, v.stale)) + '<br><small>' + esc(d.lastStop) + ': ' + esc(v.lastStop) + ' · ' + (v.dataSource === 'live' && v.updated ? esc(new Date(v.updated).toLocaleTimeString(state.lang === 'es' ? 'es-US' : 'en-US', {timeZone:'America/New_York'})) : 'SAMPLE DATA') + '</small></li>';
-    }).join('') + '</ul>' : '<p>' + esc(d.noBuses) + '</p>';
-    if (!s.map) return;
-    s.layers.vehicles.clearLayers();
-    shown.forEach(function (v) {
-      var icon = window.L.divIcon({ className: 'bus-pin', html: '<span style="background:' + s.route.color + ';color:' + contrastInk(s.route.color) + '">' + esc(s.route.id) + '</span>', iconSize: [34, 24], iconAnchor: [17, 12] });
-      window.L.marker([v.lat, v.lng], { icon: icon, title: d.toward + ' ' + v.destination, alt: 'Bus on route ' + s.route.id }).bindPopup('<strong>' + esc(d.toward) + ' ' + esc(v.destination) + '</strong><br>' + esc(rdStatus(v.deviation, false))).addTo(s.layers.vehicles);
-    });
-  }
-  function refreshRdVehicles() {
-    var token = rdState; if (!token) return;
-    TRANSIT.vehicles().then(function (v) { if (rdState !== token) return; token.vehicles = v; renderRdVehicles(); rdBadge(); }, function () { /* keep last */ });
-  }
+  function contrastInk(hex) { var n = parseInt(String(hex || '#27424b').slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255; return (r * 299 + g * 587 + b * 114) / 1000 > 150 ? '#102d39' : '#fff'; }
 
   function renderFares() {
     $('#fare-grid').innerHTML = state.fares.map(function (f) {
@@ -411,7 +243,7 @@
     if (focus) b.focus();
   }
   tabs.forEach(function (b, i) {
-    b.onclick = function () { selectTab(b); if (b.dataset.tab === 'track') { $('#tracker').scrollIntoView({ behavior: 'smooth' }); $('#tracker-route').focus(); } };
+    b.onclick = function () { selectTab(b); };
     b.onkeydown = function (e) {
       var k = e.key, n = null;
       if (k === 'ArrowRight') n = tabs[(i + 1) % tabs.length];

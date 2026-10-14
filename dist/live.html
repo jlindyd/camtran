@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Live bus map and next departures for CamTran routes. Independent prototype for RFP 26-05.">
+<title>CamTran — Live bus tracker</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="live.css">
+</head>
+<body class="live-page">
+<a class="skip" id="skip" href="#panel">Skip to route details</a>
+
+<header class="live-head">
+  <a class="live-back" href="index.html" id="back-link"><span aria-hidden="true">←</span> <span id="back-text">CamTran</span></a>
+  <h1 id="live-title">Live bus tracker</h1>
+  <p id="live-badge" class="live-badge" role="status"></p>
+  <div class="live-head-actions">
+    <a id="official-link" href="https://live.camtranbus.com/" target="_blank" rel="noopener">Official tracker ↗</a>
+    <button id="language" type="button" lang="es" aria-label="Cambiar a español">ES</button>
+  </div>
+</header>
+
+<div class="live-layout">
+  <div class="live-map-wrap">
+    <div id="map" class="live-map" role="region" aria-label="Live bus map"></div>
+    <div class="map-actions"><button type="button" id="all-buses" class="mini-btn"></button></div>
+  </div>
+
+  <main id="panel" class="live-panel" tabindex="-1" aria-label="Route and stop information">
+    <details id="picker" class="picker" open>
+      <summary id="picker-summary"></summary>
+      <label class="field"><span id="search-label"></span><input id="route-search" type="search" autocomplete="off"></label>
+      <p id="route-status" class="small" role="status"></p>
+      <ul id="route-list" class="route-pick"></ul>
+    </details>
+    <div id="panel-body"></div>
+  </main>
+</div>
+
+<noscript><p class="noscript">This page needs JavaScript to show live buses. Use CamTran’s official tracker at live.camtranbus.com.</p></noscript>
+
+<script src="cms/content.js"></script>
+<script src="cms/adapter.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="transit/sample.js"></script>
+<script src="transit/transit-adapter.js"></script>
+<script src="live.js"></script>
+</body>
+</html>
