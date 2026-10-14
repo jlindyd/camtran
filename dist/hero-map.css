@@ -1,0 +1,42 @@
+/* Hero live map. The illustration (.city-scene) is the default; the map replaces it once live data is confirmed. */
+.hero-map{display:none;position:relative;overflow:hidden;border-radius:12px;background:#dfe7e3;box-shadow:0 6px 20px #09264a0a;min-width:0}
+.hero[data-live=true] .city-scene{display:none}
+.hero[data-live=true] .hero-map{display:block}
+.rider-intro .hero-map{height:360px;align-self:center}
+.hm-canvas{position:absolute;inset:0}
+.hm-overlay{position:absolute;left:12px;top:12px;z-index:500;max-width:calc(100% - 78px);background:#fffffff2;border:1px solid #c7d6e3;border-radius:8px;padding:8px 12px;box-shadow:0 2px 8px #09264a1f;color:#09264a}
+.hm-status{margin:0;font-size:13px;line-height:1.35;color:#09264a}
+.hm-status strong{color:#005a93}
+.hm-sub{margin:2px 0 0;font-size:11px;color:#465669}
+.hm-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#1b7a2f;vertical-align:baseline}
+.hm-actions{position:absolute;left:12px;bottom:26px;z-index:500;display:flex;gap:8px;flex-wrap:wrap}
+.hm-open,.hm-pause{min-height:44px;display:inline-flex;align-items:center;padding:8px 14px;border-radius:6px;font-size:13px;font-weight:700;box-shadow:0 2px 8px #09264a29}
+.hm-open{background:#005a93;color:#fff}
+.hm-pause{background:#fffffff5;color:#09264a;border:1px solid #7d9cb3}
+.hm-open:hover{background:#004a78}.hm-pause:hover{background:#edf4f9}
+@media(max-width:1000px){.rider-intro .hero-map{height:330px}}
+@media(max-width:700px){.rider-intro .hero-map{height:300px;width:100%}.hm-overlay{padding:7px 10px}.hm-status{font-size:12px}.hm-actions{bottom:24px}}
+
+.hero-map .hm-pin span{min-width:28px;height:20px;line-height:16px;font-size:11px;border-width:2px}
+.hero-map .leaflet-top.leaflet-right{margin-top:6px}
+
+/* Bigger map: wider column and taller panel (applies only while the live map is showing). */
+.rider-intro .hero[data-live=true]{grid-template-columns:minmax(0,.8fr) minmax(0,1.35fr);gap:40px}
+.rider-intro .hero[data-live=true] .hero-map{height:500px}
+.rider-intro .hero[data-live=true] h1{font-size:clamp(36px,3.3vw,50px)}
+@media(max-width:1000px){.rider-intro .hero[data-live=true]{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:28px}.rider-intro .hero[data-live=true] .hero-map{height:420px}}
+@media(max-width:700px){.rider-intro .hero[data-live=true] .hero-map{height:400px}}
+
+/* Tight intro: keep the trip planner's fields above the fold on a typical desktop screen. */
+.rider-intro{padding-top:22px;padding-bottom:24px}
+.rider-intro .hero-copy{padding-top:0;padding-bottom:0}
+.rider-intro h1{margin-bottom:18px}
+.rider-intro .hero-description{margin-top:20px}
+.rider-intro .journey{margin-top:18px}
+.rider-intro .form-fields{padding-top:16px;padding-bottom:18px}
+.rider-intro .hero[data-live=true] .hero-map{height:430px}
+@media(max-width:1000px){.rider-intro .hero[data-live=true] .hero-map{height:380px}}
+@media(max-width:700px){.rider-intro{padding-top:18px}.rider-intro .hero[data-live=true] .hero-map{height:360px}.rider-intro .journey{margin-top:16px}}
+
+/* Short laptop screens: the map yields height so the whole planner stays above the fold. */
+@media(min-width:1001px){.rider-intro .hero[data-live=true] .hero-map{height:clamp(330px,calc(100vh - 470px),430px)}}

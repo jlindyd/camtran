@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="brand.css?v=3">
 <link rel="stylesheet" href="layout.css?v=2">
 <link rel="stylesheet" href="bus-scene.css?v=1">
+<link rel="stylesheet" href="hero-map.css?v=6">
 </head>
 <body>
 <a class="skip" href="#main" data-i="skip">Skip to content</a>
@@ -30,7 +31,6 @@
   </nav>
   <div class="header-actions">
     <button id="language" type="button" lang="es" aria-label="Cambiar a español">Español</button>
-    <a class="track-button" href="live.html" data-i="track">Track my bus ↗</a><a class="pay-button" href="https://pay.camtranbus.com/app/ticketing" data-i="payHeader">CamTran PAY ↗</a>
   </div>
 </header>
 
@@ -100,6 +100,7 @@
 <path d="M0 469H800" stroke="#dbe7e8" stroke-width="22"/>
 </svg>
 <button class="motion-toggle" type="button" aria-pressed="false">Ⅱ Pause animation</button><figcaption>Illustrative city scene</figcaption></figure>
+    <div id="hero-map" class="hero-map" role="region" aria-label="Live bus map"></div>
   </section>
 
   <section class="journey" aria-label="Rider tools">
@@ -227,5 +228,6 @@
 <script src="transit/transit-adapter.js"></script>
 <script src="app.js?v=layout-2"></script>
 <script src="bus-scene.js?v=1"></script>
+<script src="hero-map.js?v=4"></script>
 </body>
 </html>

@@ -92,6 +92,17 @@ Each returned dataset carries its own provenance. Vehicle and arrival badges are
 
 The full-screen tracker filters departures by selected direction and labels schedule-only results. CMS sample notices are explicitly marked in English/Spanish. Stale buses remain listed as No recent signal but are excluded from map positions. Every route stop is selectable. `node verify-selection.cjs` now exercises live.js, including A-to-B-to-A delayed responses, direction filtering, scheduled labels, stale handling and notice labels.
 
+## Hero live map
+
+`dist/hero-map.js` + `hero-map.css` replace the hero illustration with a live bus map when, and only when, the live feed answers and the map library loads; otherwise the illustrated city scene stays (progressive enhancement, no layout shift). It loads after first paint (Leaflet is fetched lazily; skipped when the visitor has Data Saver on) and uses the same transit adapter as the tracker, so driver data is never read.
+
+- Shows every bus in its route color with a status line ("N buses running now · M running late · Updated S s ago"), a link to the full tracker, and clickable markers whose popup links to that route on `live.html`.
+- Polls every 15 s while the tab is visible; each marker glides to its new position over the next 14 s. Positions come from the vendor's GPS reports, so the motion is interpolated between updates, not continuous tracking.
+- Opens on the Johnstown-area (urban) buses so motion is visible; rural CamTran+ routes are a pan away. The status line counts all buses.
+- Accessibility: "Pause updates" button (stops polling and gliding), reduced-motion preference respected (markers jump instead of gliding), markers are not keyboard tab stops (the full tracker is the keyboard-friendly view), text summary in the status line, bilingual labels. On phones one-finger drag is disabled so the map doesn't trap page scrolling.
+- If the feed drops after load, the markers stay with "Live feed interrupted. Showing last known positions."; it recovers on the next successful poll.
+- Production note: OpenStreetMap's free tile service is for light use; a busy production page needs a paid or self-hosted tile provider.
+
 ## Page width
 
 `dist/layout.css` keeps page content in a centered column (1180px) while section backgrounds stay full-bleed. Change `--page-max` at the top of that file to make the site narrower or wider. The live tracker page (`live.html`) is full-screen by design, and the guide and editor pages have their own widths.
