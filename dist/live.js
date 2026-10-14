@@ -11,7 +11,7 @@
 
   var STR = {
     en: {
-      back: 'CamTran', title: 'Live bus tracker', skip: 'Skip to route details', official: 'Official tracker ↗', langBtn: 'ES', langLabel: 'Cambiar a español',
+      back: 'CamTran', title: 'Live bus tracker', skip: 'Skip to route details', official: 'Official tracker ↗', langBtn: 'Español', langLabel: 'Cambiar a español',
       pickRoute: function (n) { return 'Routes (' + n + ')'; }, changeRoute: 'Change route', searchRoutes: 'Search routes by number or name', allBuses: 'Show all buses', allBusesOn: 'Showing all buses',
       routeCount: function (n) { return n + ' route' + (n === 1 ? '' : 's'); }, noRoutes: 'No routes match your search.', urban: 'Urban', rural: 'CamTran+',
       choose: 'Choose a route', chooseText: 'Pick a route to see its map, stops and next departures. The map shows every bus until you do.',
@@ -26,7 +26,7 @@
       mapDown: 'The map could not load. Use the lists beside it.', map: 'Live bus map', fromTracker: 'CamTran myStop', pagePrefix: 'CamTran — '
     },
     es: {
-      back: 'CamTran', title: 'Rastreador de autobuses en vivo', skip: 'Saltar a los detalles de la ruta', official: 'Rastreador oficial ↗', langBtn: 'EN', langLabel: 'Switch to English',
+      back: 'CamTran', title: 'Rastreador de autobuses en vivo', skip: 'Saltar a los detalles de la ruta', official: 'Rastreador oficial ↗', langBtn: 'English', langLabel: 'Switch to English',
       pickRoute: function (n) { return 'Rutas (' + n + ')'; }, changeRoute: 'Cambiar de ruta', searchRoutes: 'Buscar rutas por número o nombre', allBuses: 'Mostrar todos los autobuses', allBusesOn: 'Mostrando todos los autobuses',
       routeCount: function (n) { return n + ' ruta' + (n === 1 ? '' : 's'); }, noRoutes: 'Ninguna ruta coincide con tu búsqueda.', urban: 'Urbana', rural: 'CamTran+',
       choose: 'Elige una ruta', chooseText: 'Elige una ruta para ver su mapa, paradas y próximas salidas. El mapa muestra todos los autobuses hasta que lo hagas.',

@@ -72,7 +72,7 @@ Item `status` is one of `draft`, `in_review`, `approved`, `published`, `archived
 
 ## Boundaries
 
-The tracker reads CamTran's public myStop feed, an undocumented vendor service that could change or restrict access; it is not a GTFS/GTFS-Realtime integration, and its estimates are not validated. No itinerary engine, payment collection, authentication, server persistence, production hosting, security certification or accessibility conformance certification is implemented. The trip planner and CMS content remain illustrative, and timetables are not reproduced (official links only); tracker data is live or clearly labeled sample data. Fare amounts and route names were reviewed against the current public site on October 14, 2026 and must be reconfirmed before submission. The design is a new visual direction and does not reproduce official brand assets.
+The tracker reads CamTran's public myStop feed, an undocumented vendor service that could change or restrict access; it is not a GTFS/GTFS-Realtime integration, and its estimates are not validated. No itinerary engine, payment collection, authentication, server persistence, production hosting, security certification or accessibility conformance certification is implemented. The trip planner and CMS content remain illustrative, and timetables are not reproduced (official links only); tracker data is live or clearly labeled sample data. Fare amounts and route names were reviewed against the current public site on October 14, 2026 and must be reconfirmed before submission. The design is a new visual direction; it uses CamTran's public logo for illustration (see the brand section below).
 
 The RFP is source material for requirements. Mandatory forms, bonds, references, pricing, hosting/security architecture and service levels must be completed separately. Do not share a private preview URL with evaluators without arranging suitable access.
 
@@ -91,6 +91,10 @@ Each returned dataset carries its own provenance. Vehicle and arrival badges are
 ## Full-screen tracker verification
 
 The full-screen tracker filters departures by selected direction and labels schedule-only results. CMS sample notices are explicitly marked in English/Spanish. Stale buses remain listed as No recent signal but are excluded from map positions. Every route stop is selectable. `node verify-selection.cjs` now exercises live.js, including A-to-B-to-A delayed responses, direction filtering, scheduled labels, stale handling and notice labels.
+
+## Page width
+
+`dist/layout.css` keeps page content in a centered column (1180px) while section backgrounds stay full-bleed. Change `--page-max` at the top of that file to make the site narrower or wider. The live tracker page (`live.html`) is full-screen by design, and the guide and editor pages have their own widths.
 
 ## Approved CamTran brand design
 

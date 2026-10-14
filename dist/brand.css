@@ -6,3 +6,9 @@ body{background:#fff}a:focus-visible,button:focus-visible,input:focus-visible,se
 
 .live-head{padding:10px 20px;gap:18px}.live-head h1{font-size:20px;color:white}.live-back{color:white}.live-panel .back-btn{color:var(--blue)}.route-pick button[aria-current=true],.stop-row[aria-current=true]{background:#e4effa}.route-pick button:hover,.stop-row:hover,.bus-row:hover{background:#eff5fa}@media(max-width:700px){.hero h1{font-size:37px;letter-spacing:-1.5px}header nav{flex-wrap:wrap;justify-content:center;overflow:visible;white-space:normal;font-size:12px;gap:8px 15px}.live-head{padding:10px 14px;gap:8px}.live-head h1{font-size:15px}}
 .fare-grid .eyebrow{display:block;margin:0}.fare-grid .fare-top{display:block}.fare-grid article{display:flex;flex-direction:column}.fare-grid h3{margin-top:22px}.fare-grid a{margin-top:auto}.fare-grid p{margin-bottom:22px}
+
+/* The language switch remains easy to find in either header. */
+.header-actions #language,.live-head #language{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:10px 14px;background:#fff2f9;color:#830052;border:1.5px solid #a00065;border-radius:6px;font-size:13px;font-weight:700;white-space:nowrap;gap:7px;flex-shrink:0}
+.header-actions #language:before,.live-head #language:before{content:'↔';font-size:17px;line-height:1}
+.header-actions #language:hover,.live-head #language:hover{background:#fce0ef}
+@media(max-width:700px){.header-actions #language,.live-head #language{padding:8px 10px;font-size:12px;min-height:44px}.header-actions{gap:8px}}

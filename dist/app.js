@@ -54,7 +54,7 @@
       svcSteps: ['Review the service and eligibility information.', 'Contact CamTran for help choosing the right program.', 'Complete the official application, if required.'],
       svcNote: 'This demonstration does not determine eligibility or collect applications.', svcLink: 'Continue to official program information ↗',
       calTitle: 'Community calendar', calNote: 'Sample events for demonstrating the calendar interface. Managed in the CMS.', noEvents: 'No upcoming events.',
-      newsNone: 'No announcements right now.', lang: 'ES', langLabel: 'Cambiar a español'
+      newsNone: 'No announcements right now.', lang: 'Español', langLabel: 'Cambiar a español'
     },
     es: {
       alertLabel: { info: 'AVISO DE SERVICIO', detour: 'DESVÍO', weather: 'AVISO DEL CLIMA', emergency: 'EMERGENCIA' },
@@ -74,7 +74,7 @@
       svcSteps: ['Revisa la información del servicio y la elegibilidad.', 'Comunícate con CamTran para elegir el programa adecuado.', 'Completa la solicitud oficial, si se requiere.'],
       svcNote: 'Esta demostración no determina la elegibilidad ni recibe solicitudes.', svcLink: 'Continuar a la información oficial del programa ↗',
       calTitle: 'Calendario comunitario', calNote: 'Eventos de ejemplo para demostrar el calendario. Administrados en el CMS.', noEvents: 'No hay eventos próximos.',
-      newsNone: 'No hay anuncios por ahora.', lang: 'EN', langLabel: 'Switch to English'
+      newsNone: 'No hay anuncios por ahora.', lang: 'English', langLabel: 'Switch to English'
     }
   };
   var SERVICES = {
